@@ -63,14 +63,14 @@
 //! compiler API. Functionality in `proc_macro` that is not yet stable is not
 //! exposed by proc-macro2 by default.
 //!
-//! To opt into the additional APIs available in the most recent nightly
-//! compiler, the `procmacro2_semver_exempt` config flag must be passed to
-//! rustc. We will polyfill those nightly-only APIs back to Rust 1.31.0. As
-//! these are unstable APIs that track the nightly compiler, minor versions of
-//! proc-macro2 may make breaking changes to them at any time.
-//!
-//! ```sh
-//! RUSTFLAGS='--cfg procmacro2_semver_exempt' cargo build
+//! To opt into the additional APIs available in the most recent nightly compiler,
+//! the `semver-exempt` feature must be enabled. We will
+//! polyfill those nightly-only APIs back to Rust 1.31.0. As these are unstable APIs
+//! that track the nightly compiler, minor versions of proc-macro2 may make breaking
+//! changes to them at any time.
+//! 
+//! ```
+//! cargo build
 //! ```
 //!
 //! Note that this must not only be done for your crate, but for any crate that
@@ -111,10 +111,10 @@
     clippy::vec_init_then_push
 )]
 
-#[cfg(all(procmacro2_semver_exempt, wrap_proc_macro, not(super_unstable)))]
+#[cfg(all(feature = "semver-exempt", wrap_proc_macro, not(super_unstable)))]
 compile_error! {"\
     Something is not right. If you've tried to turn on \
-    procmacro2_semver_exempt, you need to ensure that it \
+    semver-exempt, you need to ensure that it \
     is turned on for the compilation of the proc-macro2 \
     build script as well.
 "}
@@ -156,7 +156,7 @@ use core::iter::FromIterator;
 use core::ops::RangeBounds;
 use core::str::FromStr;
 use std::error::Error;
-#[cfg(procmacro2_semver_exempt)]
+#[cfg(feature = "semver-exempt")]
 use std::path::PathBuf;
 
 #[cfg(span_locations)]
@@ -320,15 +320,15 @@ impl Error for LexError {}
 /// The source file of a given `Span`.
 ///
 /// This type is semver exempt and not exposed by default.
-#[cfg(all(procmacro2_semver_exempt, any(not(wrap_proc_macro), super_unstable)))]
-#[cfg_attr(doc_cfg, doc(cfg(procmacro2_semver_exempt)))]
+#[cfg(all(feature = "semver-exempt", any(not(wrap_proc_macro), super_unstable)))]
+#[cfg_attr(doc_cfg, doc(cfg(feature = "semver-exempt")))]
 #[derive(Clone, PartialEq, Eq)]
 pub struct SourceFile {
     inner: imp::SourceFile,
     _marker: Marker,
 }
 
-#[cfg(all(procmacro2_semver_exempt, any(not(wrap_proc_macro), super_unstable)))]
+#[cfg(all(feature = "semver-exempt", any(not(wrap_proc_macro), super_unstable)))]
 impl SourceFile {
     fn _new(inner: imp::SourceFile) -> Self {
         SourceFile {
@@ -361,7 +361,7 @@ impl SourceFile {
     }
 }
 
-#[cfg(all(procmacro2_semver_exempt, any(not(wrap_proc_macro), super_unstable)))]
+#[cfg(all(feature = "semver-exempt", any(not(wrap_proc_macro), super_unstable)))]
 impl Debug for SourceFile {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         Debug::fmt(&self.inner, f)
@@ -412,8 +412,8 @@ impl Span {
     /// A span that resolves at the macro definition site.
     ///
     /// This method is semver exempt and not exposed by default.
-    #[cfg(procmacro2_semver_exempt)]
-    #[cfg_attr(doc_cfg, doc(cfg(procmacro2_semver_exempt)))]
+    #[cfg(feature = "semver-exempt")]
+    #[cfg_attr(doc_cfg, doc(cfg(feature = "semver-exempt")))]
     pub fn def_site() -> Self {
         Span::_new(imp::Span::def_site())
     }
@@ -455,8 +455,8 @@ impl Span {
     /// The original source file into which this span points.
     ///
     /// This method is semver exempt and not exposed by default.
-    #[cfg(all(procmacro2_semver_exempt, any(not(wrap_proc_macro), super_unstable)))]
-    #[cfg_attr(doc_cfg, doc(cfg(procmacro2_semver_exempt)))]
+    #[cfg(all(feature = "semver-exempt", any(not(wrap_proc_macro), super_unstable)))]
+    #[cfg_attr(doc_cfg, doc(cfg(feature = "semver-exempt")))]
     pub fn source_file(&self) -> SourceFile {
         SourceFile::_new(self.inner.source_file())
     }
@@ -494,8 +494,8 @@ impl Span {
     /// Creates an empty span pointing to directly before this span.
     ///
     /// This method is semver exempt and not exposed by default.
-    #[cfg(all(procmacro2_semver_exempt, any(not(wrap_proc_macro), super_unstable)))]
-    #[cfg_attr(doc_cfg, doc(cfg(procmacro2_semver_exempt)))]
+    #[cfg(all(feature = "semver-exempt", any(not(wrap_proc_macro), super_unstable)))]
+    #[cfg_attr(doc_cfg, doc(cfg(feature = "semver-exempt")))]
     pub fn before(&self) -> Span {
         Span::_new(self.inner.before())
     }
@@ -503,8 +503,8 @@ impl Span {
     /// Creates an empty span pointing to directly after this span.
     ///
     /// This method is semver exempt and not exposed by default.
-    #[cfg(all(procmacro2_semver_exempt, any(not(wrap_proc_macro), super_unstable)))]
-    #[cfg_attr(doc_cfg, doc(cfg(procmacro2_semver_exempt)))]
+    #[cfg(all(feature = "semver-exempt", any(not(wrap_proc_macro), super_unstable)))]
+    #[cfg_attr(doc_cfg, doc(cfg(feature = "semver-exempt")))]
     pub fn after(&self) -> Span {
         Span::_new(self.inner.after())
     }
@@ -525,8 +525,8 @@ impl Span {
     /// Compares two spans to see if they're equal.
     ///
     /// This method is semver exempt and not exposed by default.
-    #[cfg(procmacro2_semver_exempt)]
-    #[cfg_attr(doc_cfg, doc(cfg(procmacro2_semver_exempt)))]
+    #[cfg(feature = "semver-exempt")]
+    #[cfg_attr(doc_cfg, doc(cfg(feature = "semver-exempt")))]
     pub fn eq(&self, other: &Span) -> bool {
         self.inner.eq(&other.inner)
     }

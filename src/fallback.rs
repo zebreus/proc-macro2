@@ -436,7 +436,7 @@ impl SourceMap {
         span
     }
 
-    #[cfg(procmacro2_semver_exempt)]
+    #[cfg(feature = "semver-exempt")]
     fn filepath(&self, span: Span) -> PathBuf {
         for (i, file) in self.files.iter().enumerate() {
             if file.span_within(span) {
@@ -484,7 +484,7 @@ impl Span {
         Span::call_site()
     }
 
-    #[cfg(procmacro2_semver_exempt)]
+    #[cfg(feature = "semver-exempt")]
     pub fn def_site() -> Self {
         Span::call_site()
     }
@@ -500,7 +500,7 @@ impl Span {
         other
     }
 
-    #[cfg(procmacro2_semver_exempt)]
+    #[cfg(feature = "semver-exempt")]
     pub fn source_file(&self) -> SourceFile {
         #[cfg(fuzzing)]
         return SourceFile {
@@ -541,7 +541,7 @@ impl Span {
         })
     }
 
-    #[cfg(procmacro2_semver_exempt)]
+    #[cfg(feature = "semver-exempt")]
     pub fn before(&self) -> Span {
         Span {
             #[cfg(span_locations)]
@@ -551,7 +551,7 @@ impl Span {
         }
     }
 
-    #[cfg(procmacro2_semver_exempt)]
+    #[cfg(feature = "semver-exempt")]
     pub fn after(&self) -> Span {
         Span {
             #[cfg(span_locations)]

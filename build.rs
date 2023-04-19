@@ -8,10 +8,10 @@
 //
 // "wrap_proc_macro"
 //     Wrap types from libproc_macro rather than polyfilling the whole API.
-//     Enabled on rustc 1.29+ as long as procmacro2_semver_exempt is not set,
+//     Enabled on rustc 1.29+ as long as semver-exempt is not enabled,
 //     because we can't emulate the unstable API without emulating everything
 //     else. Also enabled unconditionally on nightly, in which case the
-//     procmacro2_semver_exempt surface area is implemented by using the
+//     semver-exempt surface area is implemented by using the
 //     nightly-only proc_macro API.
 //
 // "hygiene"
@@ -26,11 +26,11 @@
 //
 // "super_unstable"
 //     Implement the semver exempt API in terms of the nightly-only proc_macro
-//     API. Enabled when using procmacro2_semver_exempt on a nightly compiler.
+//     API. Enabled when enableing the semver-exempt feature on a nightly compiler.
 //
 // "span_locations"
 //     Provide methods Span::start and Span::end which give the line/column
-//     location of a token. Enabled by procmacro2_semver_exempt or the
+//     location of a token. Enabled by the semver-exempt feature or the
 //     "span-locations" Cargo cfg. This is behind a cfg because tracking
 //     location inside spans is a performance hit.
 //
@@ -58,7 +58,7 @@ fn main() {
     }
 
     let docs_rs = env::var_os("DOCS_RS").is_some();
-    let semver_exempt = cfg!(procmacro2_semver_exempt) || docs_rs;
+    let semver_exempt = cfg!(feature = "semver-exempt") || docs_rs;
     if semver_exempt {
         // https://github.com/dtolnay/proc-macro2/issues/147
         println!("cargo:rustc-cfg=procmacro2_semver_exempt");

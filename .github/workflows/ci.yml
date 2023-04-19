@@ -34,14 +34,14 @@ jobs:
       - run: cargo test
       - run: cargo test --no-default-features
       - run: cargo test --features span-locations
-      - name: RUSTFLAGS='--cfg procmacro2_semver_exempt' cargo test
+      - name: RUSTFLAGS='--features semver-exempt' cargo test
         run: cargo test
         env:
-          RUSTFLAGS: --cfg procmacro2_semver_exempt ${{env.RUSTFLAGS}}
-      - name: RUSTFLAGS='--cfg procmacro2_semver_exempt' cargo test --no-default-features
+          RUSTFLAGS: --features semver-exempt ${{env.RUSTFLAGS}}
+      - name: RUSTFLAGS='--features semver-exempt' cargo test --no-default-features
         run: cargo test --no-default-features
         env:
-          RUSTFLAGS: --cfg procmacro2_semver_exempt ${{env.RUSTFLAGS}}
+          RUSTFLAGS: --features semver-exempt ${{env.RUSTFLAGS}}
 
   nightly:
     name: Rust nightly
@@ -59,14 +59,14 @@ jobs:
       - run: cargo test --no-default-features --test features -- --ignored make_sure_no_proc_macro # run the ignored test to make sure the `proc-macro` feature is disabled
       - run: cargo test --features span-locations
       - run: cargo test --manifest-path tests/ui/Cargo.toml
-      - name: RUSTFLAGS='--cfg procmacro2_semver_exempt' cargo test
+      - name: RUSTFLAGS='--features semver-exempt' cargo test
         run: cargo test
         env:
-          RUSTFLAGS: --cfg procmacro2_semver_exempt ${{env.RUSTFLAGS}}
-      - name: RUSTFLAGS='--cfg procmacro2_semver_exempt' cargo test --no-default-features
+          RUSTFLAGS: --features semver-exempt ${{env.RUSTFLAGS}}
+      - name: RUSTFLAGS='--features semver-exempt' cargo test --no-default-features
         run: cargo test --no-default-features
         env:
-          RUSTFLAGS: --cfg procmacro2_semver_exempt ${{env.RUSTFLAGS}}
+          RUSTFLAGS: --features semver-exempt ${{env.RUSTFLAGS}}
       - name: RUSTFLAGS='-Z allow-features=' cargo test
         run: cargo test
         env:

@@ -383,7 +383,7 @@ testing 123
     );
 }
 
-#[cfg(procmacro2_semver_exempt)]
+#[cfg(feature = "semver-exempt")]
 #[cfg(not(nightly))]
 #[test]
 fn default_span() {
@@ -398,7 +398,7 @@ fn default_span() {
     assert!(!source_file.is_real());
 }
 
-#[cfg(procmacro2_semver_exempt)]
+#[cfg(feature = "semver-exempt")]
 #[test]
 fn span_join() {
     let source1 = "aaa\nbbb"

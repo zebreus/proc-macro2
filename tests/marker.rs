@@ -53,7 +53,7 @@ assert_impl!(Span is not Send or Sync);
 assert_impl!(TokenStream is not Send or Sync);
 assert_impl!(TokenTree is not Send or Sync);
 
-#[cfg(procmacro2_semver_exempt)]
+#[cfg(feature = "semver-exempt")]
 mod semver_exempt {
     use proc_macro2::{LineColumn, SourceFile};
 
@@ -67,7 +67,7 @@ mod unwind_safe {
     use proc_macro2::{
         Delimiter, Group, Ident, LexError, Literal, Punct, Spacing, Span, TokenStream, TokenTree,
     };
-    #[cfg(procmacro2_semver_exempt)]
+    #[cfg(feature = "semver-exempt")]
     use proc_macro2::{LineColumn, SourceFile};
     use std::panic::{RefUnwindSafe, UnwindSafe};
 
@@ -92,7 +92,7 @@ mod unwind_safe {
         TokenTree
     }
 
-    #[cfg(procmacro2_semver_exempt)]
+    #[cfg(feature = "semver-exempt")]
     assert_unwind_safe! {
         LineColumn
         SourceFile

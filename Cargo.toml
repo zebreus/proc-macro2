@@ -1,6 +1,6 @@
 [package]
 name = "proc-macro2"
-version = "1.0.56" # remember to update html_root_url
+version = "1.0.57" # remember to update html_root_url
 authors = ["David Tolnay <dtolnay@gmail.com>", "Alex Crichton <alex@alexcrichton.com>"]
 autobenches = false
 categories = ["development-tools::procedural-macro-helpers"]
@@ -13,12 +13,12 @@ repository = "https://github.com/dtolnay/proc-macro2"
 rust-version = "1.31"
 
 [package.metadata.docs.rs]
-rustc-args = ["--cfg", "procmacro2_semver_exempt"]
-rustdoc-args = ["--cfg", "procmacro2_semver_exempt", "--cfg", "doc_cfg"]
+rustc-args = ["--features", "semver-exempt"]
+rustdoc-args = ["--features", "semver-exempt", "doc_cfg"]
 targets = ["x86_64-unknown-linux-gnu"]
 
 [package.metadata.playground]
-features = ["span-locations"]
+features = ["span-locations", "semver-exempt"]
 
 [dependencies]
 unicode-ident = "1.0"
@@ -37,6 +37,9 @@ span-locations = []
 
 # This feature no longer means anything.
 nightly = []
+
+# Opt into the additional semver exempt APIs
+semver-exempt = []
 
 [lib]
 doc-scrape-examples = false
